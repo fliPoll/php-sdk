@@ -18,7 +18,7 @@ This repository contains PHP code that allows for the easy integration of fliPol
 2. **Create a fliPoll app** - Once you have a fliPoll account, login and navigate to your [App Dashboard][app-dashboard] to create an app then save off its `app id` and `app secret` to be used later on.
 3. **Minimum requirements** - The PHP SDK requires a system including **PHP >= 5.4** compiled with **cURL >= 7.20.0**.
 4. **Install the SDK** - The PHP SDK can be included either through an installation via Composer or by downloading the SDK zip file from GitHub and including it directly.
-	1. Installing via Composer
+	* Installing via Composer
 		1. Install Composer via the command line.
 			
 			```sh
@@ -37,7 +37,7 @@ This repository contains PHP code that allows for the easy integration of fliPol
 			require 'vender/autoload.php';
 			```
 			
-	2. Installing via Zip
+	* Installing via Zip
 		1. Download the zip file from [GitHub][github].
 		2. Copy the src directory into the codebase that will use the SDK.
 		3. Require the fliPoll autoloader at the top of the PHP file(s) that will use the SDK.
