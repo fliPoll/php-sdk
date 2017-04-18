@@ -38,7 +38,7 @@ This repository contains PHP code that allows for the easy integration of fliPol
 			```
 			
 	2. Installing via Zip
-		1. Download the zip file from GitHub {link?}.
+		1. Download the zip file from [GitHub][github].
 		2. Copy the src directory into the codebase that will use the SDK.
 		3. Require the fliPoll autoloader at the top of the PHP file(s) that will use the SDK.
 			
@@ -131,6 +131,7 @@ To help us better handle issue requests, search the existing issues list first t
 
 Please see the [license file][license] for more information.
 
+[github]: https://github.com/flipoll/php-sdk
 [flipoll]: https://flipoll.com
 [app-dashboard]: https://flipoll.com/settings/apps
 [api-overview]: https://flipoll.com/developer/api
