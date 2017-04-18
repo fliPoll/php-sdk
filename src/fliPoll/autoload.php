@@ -44,9 +44,9 @@ require_once __DIR__ . '/polyfills.php';
  */
 spl_autoload_register(function($className) {
     $file = __DIR__ . '/' . str_replace(array('fliPoll\\', '\\'), array('', '/'), $className) . '.php';
-	
-	if (file_exists($file)) {
-		require($file);
-	}
+    
+    if (file_exists($file)) {
+        require($file);
+    }
 });
 ?>
