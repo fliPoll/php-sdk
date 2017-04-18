@@ -1,23 +1,23 @@
 {
     "name": "flipoll/php-sdk",
     "description": "fliPoll SDK for PHP",
-	"keywords": ["flipoll", "php", "sdk"],
+    "keywords": ["flipoll", "php", "sdk"],
     "type": "library",
-	"homepage": "https://github.com/fliPoll/php-sdk",
+    "homepage": "https://github.com/flipoll/php-sdk",
     "license": "MIT",
     "authors": [
-		{
-			"name": "fliPoll",
-			"homepage": "https://github.com/fliPoll/php-sdk/contributors"
-		}
-	],
+        {
+            "name": "fliPoll",
+            "homepage": "https://github.com/flipoll/php-sdk/contributors"
+        }
+    ],
     "require": {
-		"php": "^5.4|^7.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"Test\\": "src/fliPoll/"
-		},
-		"files": ["src/fliPoll/polyfills.php"]
-	}
+        "php": "^5.4|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "fliPoll\\": "src/fliPoll/"
+        },
+        "files": ["src/fliPoll/polyfills.php"]
+    }
 }
