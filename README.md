@@ -140,4 +140,4 @@ Please see the [license file][license] for more information.
 [api-php-sdk-start]: https://flipoll.com/developer/api/sdks/php/start
 [api-php-sdk-reference]: https://flipoll.com/developer/api/sdks/php/reference
 [api-sdks]: https://flipoll.com/developer/api/sdks
-[license]: https://github.com/flipoll/php-sdk/blob/master/LICENSE# php-sdk
+[license]: https://github.com/flipoll/php-sdk/blob/master/LICENSE
