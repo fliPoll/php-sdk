@@ -1,5 +1,7 @@
 # fliPoll SDK for PHP
 
+[![MIT License](https://img.shields.io/packagist/l/flipoll/php-sdk.svg?style=flat)][license]
+
 This repository contains PHP code that allows for the easy integration of fliPoll into server-side applications.
 
 ## Resources
@@ -132,6 +134,7 @@ To help us better handle issue requests, search the existing issues list first t
 Please see the [license file][license] for more information.
 
 [github]: https://github.com/flipoll/php-sdk
+[license]: https://github.com/flipoll/php-sdk/blob/master/LICENSE
 [flipoll]: https://flipoll.com
 [app-dashboard]: https://flipoll.com/settings/apps
 [api-overview]: https://flipoll.com/developer/api
@@ -141,4 +144,3 @@ Please see the [license file][license] for more information.
 [api-php-sdk-start]: https://flipoll.com/developer/api/sdks/php/start
 [api-php-sdk-reference]: https://flipoll.com/developer/api/sdks/php/reference
 [api-sdks]: https://flipoll.com/developer/api/sdks
-[license]: https://github.com/flipoll/php-sdk/blob/master/LICENSE
