@@ -34,39 +34,39 @@ use fliPoll\Authentication\fliPollAccessToken;
 use fliPoll\Authentication\fliPollSignedRequest;
 
 class fliPollLoginHandler {
-	/**
-	 * @var \fliPoll\fliPoll The fliPoll class object.
-	 */
-	protected $fliPoll;
-	
-	/**
-	 * @var \fliPoll\Data\fliPollQueryData The fliPollQueryData class object.
-	 */
-	protected $queryData;
-	
-	/**
-	 * @var \fliPoll\Data\fliPollSessionData The fliPollSessionData class object.
-	 */
-	protected $sessionData;
-	
-	/**
-	 * @var \fliPoll\Data\fliPollCookieData The fliPollCookieData class object.
-	 */
-	protected $cookieData;
-	
-	/**
+    /**
+     * @var \fliPoll\fliPoll The fliPoll class object.
+     */
+    protected $fliPoll;
+    
+    /**
+     * @var \fliPoll\Data\fliPollQueryData The fliPollQueryData class object.
+     */
+    protected $queryData;
+    
+    /**
+     * @var \fliPoll\Data\fliPollSessionData The fliPollSessionData class object.
+     */
+    protected $sessionData;
+    
+    /**
+     * @var \fliPoll\Data\fliPollCookieData The fliPollCookieData class object.
+     */
+    protected $cookieData;
+    
+    /**
      * Instantiates a new fliPollLoginHandler class object.
      * 
      * @param \fliPoll\fliPoll $fliPoll
      */
-	function __construct(fliPoll $fliPoll) {
-		$this->fliPoll = $fliPoll;
-		
-		$this->queryData = new fliPollQueryData();
-		
-		$this->sessionData = new fliPollSessionData();
-		
-		$this->cookieData = new fliPollCookieData();
-	}
+    function __construct(fliPoll $fliPoll) {
+        $this->fliPoll = $fliPoll;
+        
+        $this->queryData = new fliPollQueryData();
+        
+        $this->sessionData = new fliPollSessionData();
+        
+        $this->cookieData = new fliPollCookieData();
+    }
 }
 ?>
