@@ -32,40 +32,40 @@ use fliPoll\Exceptions\fliPollSdkException;
 use fliPoll\Exceptions\fliPollAuthenticationException;
 
 class fliPollJavascriptLoginHandler extends fliPollLoginHandler {
-	/**
-	 * @const string The signed request prefix.
-	 */
-	const SIGNED_REQUEST_PREFIX = 'fplsr_';
-	
-	/**
-     * Returns the access token associated with a signed request cookie.
-	 *
-	 * @return \fliPoll\Authentication\fliPollAccessToken
+    /**
+     * @const string The signed request prefix.
      */
-	public function getAccessToken() {
-		$getSignedRequest = 'get' . self::SIGNED_REQUEST_PREFIX . $this->fliPoll->getAppId();
-		
-		if (!$signedRequest = $this->cookieData->$getSignedRequest()) {
-			throw new fliPollAuthenticationException('No Javascript login detected.');
-		}
-		
-		$signedRequest = new fliPollSignedRequest($this->fliPoll, $signedRequest);
-		
-		if ($signedRequest->getAppId() != $this->fliPoll->getAppId()) {
-			throw new fliPollAuthenticationException('The signed request\'s app id does not match the app id used to initialize the SDK.');
-		}
-		
-		if ($code = $signedRequest->getCode()) {
-			$oauth2Client = $this->fliPoll->getOAuth2Client();
-			
-			return $oauth2Client->getUserAccessToken($code);
-		}
-		
-		if (!$signedRequest->getAccessToken()) {
-			throw new fliPollAuthenticationException('No OAuth data was found in the signed request.');
-		}
-		
-		return new fliPollAccessToken($signedRequest->getMetadata());
-	}
+    const SIGNED_REQUEST_PREFIX = 'fplsr_';
+    
+    /**
+     * Returns the access token associated with a signed request cookie.
+     *
+     * @return \fliPoll\Authentication\fliPollAccessToken
+     */
+    public function getAccessToken() {
+        $getSignedRequest = 'get' . self::SIGNED_REQUEST_PREFIX . $this->fliPoll->getAppId();
+        
+        if (!$signedRequest = $this->cookieData->$getSignedRequest()) {
+            throw new fliPollAuthenticationException('No Javascript login detected.');
+        }
+        
+        $signedRequest = new fliPollSignedRequest($this->fliPoll, $signedRequest);
+        
+        if ($signedRequest->getAppId() != $this->fliPoll->getAppId()) {
+            throw new fliPollAuthenticationException('The signed request\'s app id does not match the app id used to initialize the SDK.');
+        }
+        
+        if ($code = $signedRequest->getCode()) {
+            $oauth2Client = $this->fliPoll->getOAuth2Client();
+            
+            return $oauth2Client->getUserAccessToken($code);
+        }
+        
+        if (!$signedRequest->getAccessToken()) {
+            throw new fliPollAuthenticationException('No OAuth data was found in the signed request.');
+        }
+        
+        return new fliPollAccessToken($signedRequest->getMetadata());
+    }
 }
 ?>
