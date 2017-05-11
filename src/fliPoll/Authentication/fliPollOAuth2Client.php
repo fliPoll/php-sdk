@@ -40,116 +40,116 @@ use fliPoll\Exceptions\fliPollSdkException;
  * @package fliPoll\Authentication
  */
 class fliPollOAuth2Client {
-	/**
-	 * @var array The fliPoll class object.
-	 */
-	private $_fliPoll;
-	
-	/**
+    /**
+     * @var array The fliPoll class object.
+     */
+    private $_fliPoll;
+    
+    /**
      * Instantiates a new fliPoll OAuth 2.0 client class object.
-	 *
-	 * @param array $config
+     *
+     * @param array $config
      */
-	function __construct(fliPoll $fliPoll) {
-		$this->_fliPoll = $fliPoll;
-	}
-	
-	/**
+    function __construct(fliPoll $fliPoll) {
+        $this->_fliPoll = $fliPoll;
+    }
+    
+    /**
      * Performs an OAuth 2.0 API request to retrieve an app access token.
-	 *
-	 * @return \fliPoll\Authentication\fliPollAccessToken
+     *
+     * @return \fliPoll\Authentication\fliPollAccessToken
      */
-	public function getAppAccessToken() {
-		$response = $this->_fliPoll->api(
-			'/oauth/token',
-			'POST',
-			array(
-				'client_id' => $this->_fliPoll->getAppId(),
-				'client_secret' => $this->_fliPoll->getAppSecret(),
-				'grant_type' => 'client_credentials'
-			)
-		);
-		
-		if ( !$results = $response->getResults()
-			or !isset($results['access_token']) ) {
-			throw new fliPollAuthenticationException('An app access token was not able to be retrieved.');
-		}
-		
-		return new fliPollAccessToken($results['access_token']);
-	}
-	
-	/**
+    public function getAppAccessToken() {
+        $response = $this->_fliPoll->api(
+            '/oauth/token',
+            'POST',
+            array(
+                'client_id' => $this->_fliPoll->getAppId(),
+                'client_secret' => $this->_fliPoll->getAppSecret(),
+                'grant_type' => 'client_credentials'
+            )
+        );
+        
+        if ( !$results = $response->getResults()
+            or !isset($results['access_token']) ) {
+            throw new fliPollAuthenticationException('An app access token was not able to be retrieved.');
+        }
+        
+        return new fliPollAccessToken($results['access_token']);
+    }
+    
+    /**
      * Performs an OAuth 2.0 API request to exchange an authorization code for a user access token.
-	 *
-	 * @param string $code
-	 * @param string $redirectUri
-	 *
-	 * @return \fliPoll\Authentication\fliPollAccessToken
+     *
+     * @param string $code
+     * @param string $redirectUri
+     *
+     * @return \fliPoll\Authentication\fliPollAccessToken
      */
-	public function getUserAccessToken($code, $redirectUri = null) {
-		$response = $this->_fliPoll->api(
-			'/oauth/token',
-			'POST',
-			array(
-				'client_id' => $this->_fliPoll->getAppId(),
-				'client_secret' => $this->_fliPoll->getAppSecret(),
-				'code' => $code,
-				'redirect_uri' => ($redirectUri) ?: $this->_getCurrentUrl(),
-				'grant_type' => 'authorization_code'
-			)
-		);
-		
-		if ( !$results = $response->getResults()
-			or !isset($results['access_token']) ) {
-			throw new fliPollAuthenticationException('A user access token was not able to be retrieved.');
-		}
-		
-		return new fliPollAccessToken($results['access_token']);
-	}
-	
-	/**
+    public function getUserAccessToken($code, $redirectUri = null) {
+        $response = $this->_fliPoll->api(
+            '/oauth/token',
+            'POST',
+            array(
+                'client_id' => $this->_fliPoll->getAppId(),
+                'client_secret' => $this->_fliPoll->getAppSecret(),
+                'code' => $code,
+                'redirect_uri' => ($redirectUri) ?: $this->_getCurrentUrl(),
+                'grant_type' => 'authorization_code'
+            )
+        );
+        
+        if ( !$results = $response->getResults()
+            or !isset($results['access_token']) ) {
+            throw new fliPollAuthenticationException('A user access token was not able to be retrieved.');
+        }
+        
+        return new fliPollAccessToken($results['access_token']);
+    }
+    
+    /**
      * Performs an OAuth 2.0 API request to retrieve an access token with metadata.
-	 *
-	 * @param string $accessToken
-	 *
-	 * @return \fliPoll\Authentication\fliPollAccessToken
+     *
+     * @param string $accessToken
+     *
+     * @return \fliPoll\Authentication\fliPollAccessToken
      */
-	public function getAccessTokenMetadata($accessToken = null) {
-		if (!in_array(gettype($accessToken), array('string', 'object', 'NULL'))) {
-			throw new fliPollSdkException('Only string and object access tokens can be passed.');
-		}
-		
-		if ( gettype($accessToken) === 'object'
-			and !( $accessToken instanceof fliPollAccessToken) ) {
-			throw new fliPollSdkException('Only \fliPoll\Authentication\fliPollAccessToken access token objects can be passed.');
-		}
-		
-		if ( !$accessToken
-			and !$this->_fliPoll->getAccessToken() ) {
-			throw new fliPollSdkException('An access token was not found.');
-		}
-		
-		$response = $this->_fliPoll->api(
-			'/oauth/token',
-			array(
-				'input_token' => ( ($accessToken) ? (string) $accessToken : $this->_fliPoll->getAccessToken() )
-			)
-		);
-		
-		if (!$results = $response->getResults()) {
-			throw new fliPollAuthenticationException('A user access token was not able to be retrieved.');
-		}
-		
-		return new fliPollAccessToken($results);
-	}
-	
-	/**
+    public function getAccessTokenMetadata($accessToken = null) {
+        if (!in_array(gettype($accessToken), array('string', 'object', 'NULL'))) {
+            throw new fliPollSdkException('Only string and object access tokens can be passed.');
+        }
+        
+        if ( gettype($accessToken) === 'object'
+            and !( $accessToken instanceof fliPollAccessToken) ) {
+            throw new fliPollSdkException('Only \fliPoll\Authentication\fliPollAccessToken access token objects can be passed.');
+        }
+        
+        if ( !$accessToken
+            and !$this->_fliPoll->getAccessToken() ) {
+            throw new fliPollSdkException('An access token was not found.');
+        }
+        
+        $response = $this->_fliPoll->api(
+            '/oauth/token',
+            array(
+                'input_token' => ( ($accessToken) ? (string) $accessToken : $this->_fliPoll->getAccessToken() )
+            )
+        );
+        
+        if (!$results = $response->getResults()) {
+            throw new fliPollAuthenticationException('A user access token was not able to be retrieved.');
+        }
+        
+        return new fliPollAccessToken($results);
+    }
+    
+    /**
      * Returns the current url of the script being executed to be used for redirect url requests.
-	 *
-	 * @return string
+     *
+     * @return string
      */
-	private function _getCurrentUrl() {
-		return 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER["REQUEST_URI"], '?');
-	}
+    private function _getCurrentUrl() {
+        return 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . strtok($_SERVER["REQUEST_URI"], '?');
+    }
 }
 ?>
