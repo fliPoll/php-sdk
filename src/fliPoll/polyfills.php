@@ -25,26 +25,26 @@
  */
 
 if (!function_exists('hash_equals')) {
-	function hash_equals($knownString, $userString) {
+    function hash_equals($knownString, $userString) {
         $knownString = (string) $knownString;
         
-		$userString = (string) $userString;
+        $userString = (string) $userString;
         
-		$lenKnown = mb_strlen($knownString, '8bit');
+        $lenKnown = mb_strlen($knownString, '8bit');
         
-		$lenUser = mb_strlen($userString, '8bit');
+        $lenUser = mb_strlen($userString, '8bit');
         
-		$len = min($lenKnown, $lenUser);
+        $len = min($lenKnown, $lenUser);
         
-		$result = 0;
+        $result = 0;
         
-		for ($i = 0; $i < $len; $i++) {
+        for ($i = 0; $i < $len; $i++) {
             $result |= ord($knownString[$i]) ^ ord($userString[$i]);
         }
-		
+        
         $result |= $knownString ^ $userString;
         
-		return ($result === 0);
+        return ($result === 0);
     }
 }
 ?>

@@ -27,66 +27,66 @@
 namespace fliPoll\Data;
 
 class fliPollData {
-	/**
-	 * @var string The prefix used for data naming conventions.
-	 */
-	public $prefix = '';
-	
-	/**
-	 * @var string The data source.
-	 */
-	public $source;
-	
-	/**
+    /**
+     * @var string The prefix used for data naming conventions.
+     */
+    public $prefix = '';
+    
+    /**
+     * @var string The data source.
+     */
+    public $source;
+    
+    /**
      * Magic function for getting and setting specific data.
-	 * 
-	 * @param string $name
-	 * @param array $arguments
-	 *
-	 * @return mixed
+     * 
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return mixed
      */
-	public function __call($name, $arguments) {
-		if ( strpos($name, 'get') === 0
-			and strpos($name, 'set') === 0
-			and strpos($name, 'delete') === 0 ) {
-			trigger_error('Call to undefined method '.__CLASS__.'::'.$name.'()', E_USER_ERROR);
-		}
-		
-		if (!isset($this->source)) {
-			return;
-		}
-		
-		$variable = $this->prefix . self::getFromCamelCase(substr($name, 3));
-		
-		if (strpos($name, 'get') === 0) {
-			return (isset($this->source[$variable])) ? $this->source[$variable] : null;
-		}
-		
-		if (strpos($name, 'set') === 0) {
-			if (!isset($arguments[0])) {
-				return;
-			}
-			
-			$this->source[$variable] = $arguments[0];
-			
-			return true;
-		}
-		
-		unset($this->source[$variable]);
-		
-		return true;
-	}
-	
-	/**
+    public function __call($name, $arguments) {
+        if ( strpos($name, 'get') === 0
+            and strpos($name, 'set') === 0
+            and strpos($name, 'delete') === 0 ) {
+            trigger_error('Call to undefined method '.__CLASS__.'::'.$name.'()', E_USER_ERROR);
+        }
+        
+        if (!isset($this->source)) {
+            return;
+        }
+        
+        $variable = $this->prefix . self::getFromCamelCase(substr($name, 3));
+        
+        if (strpos($name, 'get') === 0) {
+            return (isset($this->source[$variable])) ? $this->source[$variable] : null;
+        }
+        
+        if (strpos($name, 'set') === 0) {
+            if (!isset($arguments[0])) {
+                return;
+            }
+            
+            $this->source[$variable] = $arguments[0];
+            
+            return true;
+        }
+        
+        unset($this->source[$variable]);
+        
+        return true;
+    }
+    
+    /**
      * Returns the non-camel cased version of a string
-	 *
-	 * @param string $input
-	 * @param string $separator
-	 *
-	 * @return string
+     *
+     * @param string $input
+     * @param string $separator
+     *
+     * @return string
      */
-	public static function getFromCamelCase($input, $separator = '_') {
-		return strtolower(preg_replace('/(?<!^)[A-Z]/', $separator.'$0', $input));
-	}
+    public static function getFromCamelCase($input, $separator = '_') {
+        return strtolower(preg_replace('/(?<!^)[A-Z]/', $separator.'$0', $input));
+    }
 }
 ?>

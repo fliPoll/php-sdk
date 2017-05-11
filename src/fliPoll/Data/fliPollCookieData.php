@@ -27,11 +27,11 @@
 namespace fliPoll\Data;
 
 class fliPollCookieData extends fliPollData {
-	/**
+    /**
      * Instantiates a new fliPollCookieData class object.
      */
-	function __construct() {
-		$this->source = &$_COOKIE;
-	}
+    function __construct() {
+        $this->source = &$_COOKIE;
+    }
 }
 ?>

@@ -34,62 +34,62 @@ use fliPoll\Exceptions\fliPollClientException;
  * @package fliPoll\Http
  */
 class fliPollCurlHttpClient {
-	/**
-	 * @var \fliPoll\Http\fliPollRequest The request object.
-	 */
-	private $_request;
-	
-	/**
-	 * @var resource The cURL resource instance.
-	 */
-	private $_curl;
-	
-	/**
-	 * @var string The raw cURL HTTP response.
-	 */
-	private $_rawResponse;
-	
-	/**
-     * Instantiates a new fliPollCurlHttpClient class object.
-	 *
-	 * @param \fliPoll\Http\fliPollRequest $request
-	 *
-	 * @throws \fliPoll\Exceptions\fliPollClientException
+    /**
+     * @var \fliPoll\Http\fliPollRequest The request object.
      */
-	function __construct(fliPollRequest $request) {
-		$this->_request = $request;
-	}
-	
-	/**
+    private $_request;
+    
+    /**
+     * @var resource The cURL resource instance.
+     */
+    private $_curl;
+    
+    /**
+     * @var string The raw cURL HTTP response.
+     */
+    private $_rawResponse;
+    
+    /**
+     * Instantiates a new fliPollCurlHttpClient class object.
+     *
+     * @param \fliPoll\Http\fliPollRequest $request
+     *
+     * @throws \fliPoll\Exceptions\fliPollClientException
+     */
+    function __construct(fliPollRequest $request) {
+        $this->_request = $request;
+    }
+    
+    /**
      * Returns the response of cURL HTTP request.
-	 *
-	 * @return \fliPoll\Http\fliPollResponse
+     *
+     * @return \fliPoll\Http\fliPollResponse
      */
     public function send() {
-		$this->_openConnection();
-		
-		$this->_sendRequest();
-		
-		if ($curlErrorCode = curl_errno($this->_curl)) {
-			// echo curl_error($this->_curl).'|'.$curlErrorCode;
-			
+        $this->_openConnection();
+        
+        $this->_sendRequest();
+        
+        if ($curlErrorCode = curl_errno($this->_curl)) {
+            // echo curl_error($this->_curl).'|'.$curlErrorCode;
+            
             throw new fliPollClientException(curl_error($this->_curl), $curlErrorCode);
         }
         
-		// Separate the raw headers from the raw body
+        // Separate the raw headers from the raw body
         list($headers, $body, $httpStatusCode) = $this->_extractResponseParts();
         
-		$this->_closeConnection();
+        $this->_closeConnection();
         
-		return new fliPollResponse($headers, $body, $httpStatusCode);
+        return new fliPollResponse($headers, $body, $httpStatusCode);
     }
-	
+    
     /**
      * Opens a new cURL connection.
      */
     public function _openConnection() {
-		/*  
-	    $options = [
+        /*  
+        $options = [
             CURLOPT_CUSTOMREQUEST => $this->_request->getMethod(),
             CURLOPT_HTTPHEADER => $this->_compileRequestHeaders($this->_request->getHeaders()),
             CURLOPT_URL => $this->_request->getUrl(),
@@ -101,12 +101,12 @@ class fliPollCurlHttpClient {
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_CAINFO => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem', // @TODO: Update cert
         ];
-		*/
-		
-		$options = array(
+        */
+        
+        $options = array(
             CURLOPT_CUSTOMREQUEST => $this->_request->getMethod(),
-			CURLOPT_HTTPHEADER => $this->_compileRequestHeaders($this->_request->getHeaders()),
-			CURLOPT_URL => $this->_request->getUrl(),
+            CURLOPT_HTTPHEADER => $this->_compileRequestHeaders($this->_request->getHeaders()),
+            CURLOPT_URL => $this->_request->getUrl(),
             CURLOPT_CONNECTTIMEOUT => 10,
             CURLOPT_TIMEOUT => 60,
             CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
@@ -114,30 +114,30 @@ class fliPollCurlHttpClient {
             CURLOPT_SSL_VERIFYHOST => 2,
             CURLOPT_SSL_VERIFYPEER => false
         );
-		
-		if ($this->_request->getMethod() !== 'GET') {
+        
+        if ($this->_request->getMethod() !== 'GET') {
             $options[CURLOPT_POSTFIELDS] = $this->_request->getParams();
         }
-		
-		$this->_curl = curl_init();
-		
+        
+        $this->_curl = curl_init();
+        
         curl_setopt_array($this->_curl, $options);
     }
-	
-	/**
+    
+    /**
      * Sends the request and retrieves the raw response from cURL.
      */
     public function _sendRequest() {
-		$this->_rawResponse = curl_exec($this->_curl);
+        $this->_rawResponse = curl_exec($this->_curl);
     }
-	
+    
     /**
      * Closes an existing cURL connection.
      */
     public function _closeConnection() {
-		curl_close($this->_curl);
+        curl_close($this->_curl);
     }    
-	
+    
     /**
      * Compiles the request headers into a cURL-friendly format.
      *
@@ -147,14 +147,14 @@ class fliPollCurlHttpClient {
      */
     public function _compileRequestHeaders(array $headers = array()) {
         $return = array();
-		
+        
         foreach($headers as $key => $value) {
             $return[] = $key . ': ' . $value;
         }
-		
+        
         return $return;
     }
-	
+    
     /**
      * Returns the extracted headers, body, and HTTP status code in a three-part array.
      *
@@ -164,7 +164,7 @@ class fliPollCurlHttpClient {
         $parts = explode("\r\n\r\n", $this->_rawResponse);
         $body = array_pop($parts);
         $headers = implode("\r\n\r\n", $parts);
-		
+        
         return [trim($headers), trim($body), curl_getinfo($this->_curl, CURLINFO_HTTP_CODE)];
     }
 }

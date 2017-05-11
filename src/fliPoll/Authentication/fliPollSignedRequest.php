@@ -31,173 +31,173 @@ use fliPoll\Data\fliPollData;
 use fliPoll\Exceptions\fliPollAuthenticationException;
 
 class fliPollSignedRequest {
-	/**
-	 * @const string The aglorithm for hashing signed requests.
-	 */
-	const HASH_ALGORITHM = 'sha256';
-	
-	/**
-	 * @var \fliPoll\fliPoll The fliPoll class object.
-	 */
-	private $_fliPoll;
-	
-	/**
-	 * @var string The signed request string.
-	 */
-	private $_signedRequest;
-	
-	/**
-	 * @var array The metadata data associated with the signed request.
-	 */
-	private $_metadata;
-	
-	/**
+    /**
+     * @const string The aglorithm for hashing signed requests.
+     */
+    const HASH_ALGORITHM = 'sha256';
+    
+    /**
+     * @var \fliPoll\fliPoll The fliPoll class object.
+     */
+    private $_fliPoll;
+    
+    /**
+     * @var string The signed request string.
+     */
+    private $_signedRequest;
+    
+    /**
+     * @var array The metadata data associated with the signed request.
+     */
+    private $_metadata;
+    
+    /**
      * Instantiates a new fliPollSignedRequest class object.
      * 
      * @param \fliPoll\fliPoll $fliPoll
-	 * @param string $signedRequest
-	 *
-	 * @throws \fliPoll\Exceptions\fliPollAuthenticationException
+     * @param string $signedRequest
+     *
+     * @throws \fliPoll\Exceptions\fliPollAuthenticationException
      */
-	function __construct(fliPoll $fliPoll, $signedRequest = null) {
-		$this->_fliPoll = $fliPoll;
-		
-		if (gettype($signedRequest) != 'string') {
-			return;
-		}
-		
-		$this->_signedRequest = $signedRequest;
-		
-		$this->_parse();
-	}
-	
-	/**
+    function __construct(fliPoll $fliPoll, $signedRequest = null) {
+        $this->_fliPoll = $fliPoll;
+        
+        if (gettype($signedRequest) != 'string') {
+            return;
+        }
+        
+        $this->_signedRequest = $signedRequest;
+        
+        $this->_parse();
+    }
+    
+    /**
      * Returns the metadata associated with the signed request.
-	 *
-	 * @return mixed
+     *
+     * @return mixed
      */
-	public function getMetadata() {
-		return $this->_metadata;
-	}
-	
-	/**
+    public function getMetadata() {
+        return $this->_metadata;
+    }
+    
+    /**
      * Returns the signed request either for the current object or passed metadata data.
-	 *
-	 * @param array|null $metadata
-	 * 
-	 * @return string
+     *
+     * @param array|null $metadata
+     * 
+     * @return string
      */
-	public function getSignedRequest(array $metadata = null) {
-		if (!$metadata) {
-			return $this->_signedRequest;
-		}
-		
-		if ( !$encodedMetadata = $this->_base64Encode(json_encode($metadata))
-			or !$signature = $this->_getSignature($encodedMetadata)
-			or !$encodedSignature = $this->_base64Encode($signature) ) {
-			throw new fliPollAuthenticationException('Invalid metadata.');
-		}
-		
-		return $encodedSignature . '|' . $encodedMetadata;
-	}
+    public function getSignedRequest(array $metadata = null) {
+        if (!$metadata) {
+            return $this->_signedRequest;
+        }
+        
+        if ( !$encodedMetadata = $this->_base64Encode(json_encode($metadata))
+            or !$signature = $this->_getSignature($encodedMetadata)
+            or !$encodedSignature = $this->_base64Encode($signature) ) {
+            throw new fliPollAuthenticationException('Invalid metadata.');
+        }
+        
+        return $encodedSignature . '|' . $encodedMetadata;
+    }
 
-	/**
+    /**
      * Returns the signed request string.
-	 *
-	 * @return string
+     *
+     * @return string
      */
-	public function __toString() {
-		return $this->_signedRequest;
-	}
-	
-	/**
+    public function __toString() {
+        return $this->_signedRequest;
+    }
+    
+    /**
      * Returns specific information about an access token's metadata.
-	 * 
-	 * @param string $name
-	 * @param array|null $arguments
-	 *
-	 * @return string
+     * 
+     * @param string $name
+     * @param array|null $arguments
+     *
+     * @return string
      */
-	public function __call($name, $arguments) {
-		if ( !$metadata = $this->getMetadata()
-			or strpos($name, 'get') !== 0 ) {
-			trigger_error('Call to undefined method '.__CLASS__.'::'.$name.'()', E_USER_ERROR);
-		}
-		
-		return ( (isset($metadata[fliPollData::getFromCamelCase(substr($name, 3))]))
-			? $metadata[fliPollData::getFromCamelCase(substr($name, 3))]
-			: null
-		);
-	}
-	
-	/**
+    public function __call($name, $arguments) {
+        if ( !$metadata = $this->getMetadata()
+            or strpos($name, 'get') !== 0 ) {
+            trigger_error('Call to undefined method '.__CLASS__.'::'.$name.'()', E_USER_ERROR);
+        }
+        
+        return ( (isset($metadata[fliPollData::getFromCamelCase(substr($name, 3))]))
+            ? $metadata[fliPollData::getFromCamelCase(substr($name, 3))]
+            : null
+        );
+    }
+    
+    /**
      * Parses a signed request into metadata data.
      */
-	private function _parse() {
-		$explodedSignedRequest = explode('|', $this->_signedRequest);
-		
-		if (sizeof($explodedSignedRequest) !== 2) {
-			throw new fliPollAuthenticationException('Invalid signed request.');
-		}
-		
-		list($encodedSignature, $encodedMetadata) = $explodedSignedRequest;
-		
-		if ( !$signature = $this->_base64Decode($encodedSignature)
-			or !$hashedMetadata = $this->_getSignature($encodedMetadata)
-			or !\hash_equals($signature, $hashedMetadata)
-			or !$decodedMetadata = json_decode($this->_base64Decode($encodedMetadata), true) ) {
-			throw new fliPollAuthenticationException('Invalid signed request.');
-		}
-		
-		$this->_metadata = $decodedMetadata;
-	}
-	
-	/**
+    private function _parse() {
+        $explodedSignedRequest = explode('|', $this->_signedRequest);
+        
+        if (sizeof($explodedSignedRequest) !== 2) {
+            throw new fliPollAuthenticationException('Invalid signed request.');
+        }
+        
+        list($encodedSignature, $encodedMetadata) = $explodedSignedRequest;
+        
+        if ( !$signature = $this->_base64Decode($encodedSignature)
+            or !$hashedMetadata = $this->_getSignature($encodedMetadata)
+            or !\hash_equals($signature, $hashedMetadata)
+            or !$decodedMetadata = json_decode($this->_base64Decode($encodedMetadata), true) ) {
+            throw new fliPollAuthenticationException('Invalid signed request.');
+        }
+        
+        $this->_metadata = $decodedMetadata;
+    }
+    
+    /**
      * Returns a signed request specific hash.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
+     *
+     * @param string $text
+     *
+     * @return string
      */
-	private function _getSignature($data) {
-		return hash_hmac(
-			self::HASH_ALGORITHM,
-			$data,
-			$this->_fliPoll->getAppSecret(),
-			true
-		);
-	}
-	
-	/**
+    private function _getSignature($data) {
+        return hash_hmac(
+            self::HASH_ALGORITHM,
+            $data,
+            $this->_fliPoll->getAppSecret(),
+            true
+        );
+    }
+    
+    /**
      * Returns a formatted base 64 encoded string.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
+     *
+     * @param string $text
+     *
+     * @return string
      */
-	private function _base64Encode($text) {
-		return str_replace(
-			array('+', '/', '='),
-			array('-', '_', ''),
-			base64_encode($text)
-		);
-	}
-	
-	/**
+    private function _base64Encode($text) {
+        return str_replace(
+            array('+', '/', '='),
+            array('-', '_', ''),
+            base64_encode($text)
+        );
+    }
+    
+    /**
      * Returns a formatted base 64 decoded string.
-	 *
-	 * @param string $text
-	 *
-	 * @return string
+     *
+     * @param string $text
+     *
+     * @return string
      */
-	private function _base64Decode($text) {
-		return base64_decode(
-			str_replace(
-				array('-', '_'),
-				array('+', '/'),
-				$text
-			)
-		);
-	}
+    private function _base64Decode($text) {
+        return base64_decode(
+            str_replace(
+                array('-', '_'),
+                array('+', '/'),
+                $text
+            )
+        );
+    }
 }
 ?>

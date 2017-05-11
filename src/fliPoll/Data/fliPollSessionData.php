@@ -27,17 +27,17 @@
 namespace fliPoll\Data;
 
 class fliPollSessionData extends fliPollData {
-	/**
+    /**
      * Instantiates a new fliPollSessionData class object.
      */
-	function __construct() {
-		if (!session_id()) {
-			session_start();
-		}
-		
-		$this->prefix = 'fpl_';
-		
-		$this->source = &$_SESSION;
-	}
+    function __construct() {
+        if (!session_id()) {
+            session_start();
+        }
+        
+        $this->prefix = 'fpl_';
+        
+        $this->source = &$_SESSION;
+    }
 }
 ?>
