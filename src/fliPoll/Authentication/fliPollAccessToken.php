@@ -31,66 +31,66 @@ use fliPoll\Data\fliPollData;
 use fliPoll\Exceptions\fliPollAuthenticationException;
 
 class fliPollAccessToken {
-	/**
-	 * @var string|array The access token.
-	 */
-	private $_accessToken;
-	
-	/**
+    /**
+     * @var string|array The access token.
+     */
+    private $_accessToken;
+    
+    /**
      * Instantiates a new fliPoll Access Token class object.
-	 *
-	 * @param string|array $accessToken
+     *
+     * @param string|array $accessToken
      */
-	function __construct($accessToken) {
-		if (!in_array(gettype($accessToken), array('string', 'array'))) {
-			throw new fliPollAuthenticationException('Unsupported access token type.');
-		}
-		
-		if ( is_array($accessToken)
-			and !isset($accessToken['access_token']) ) {
-			throw new fliPollAuthenticationException('Invalid access token format.');
-		}
-		
-		$this->_accessToken = $accessToken;
-	}
-	
-	/**
+    function __construct($accessToken) {
+        if (!in_array(gettype($accessToken), array('string', 'array'))) {
+            throw new fliPollAuthenticationException('Unsupported access token type.');
+        }
+        
+        if ( is_array($accessToken)
+            and !isset($accessToken['access_token']) ) {
+            throw new fliPollAuthenticationException('Invalid access token format.');
+        }
+        
+        $this->_accessToken = $accessToken;
+    }
+    
+    /**
      * Returns the access token metadata if it exists.
-	 *
-	 * @return array|null
+     *
+     * @return array|null
      */
-	public function getMetadata() {
-		return (is_array($this->_accessToken)) ? $this->_accessToken : null;
-	}
-	
-	/**
+    public function getMetadata() {
+        return (is_array($this->_accessToken)) ? $this->_accessToken : null;
+    }
+    
+    /**
      * Returns the access token string.
-	 *
-	 * @return string
+     *
+     * @return string
      */
-	public function __toString() {
-		return ($metaData = $this->getMetadata())
-			? $metaData['access_token']
-			: $this->_accessToken;
-	}
-	
-	/**
+    public function __toString() {
+        return ($metaData = $this->getMetadata())
+            ? $metaData['access_token']
+            : $this->_accessToken;
+    }
+    
+    /**
      * Returns specific information about an access token's metadata.
-	 * 
-	 * @param string $name
-	 * @param array|null $arguments
-	 *
-	 * @return string
+     * 
+     * @param string $name
+     * @param array|null $arguments
+     *
+     * @return string
      */
-	public function __call($name, $arguments) {
-		if (strpos($name, 'get') !== 0) {
-			trigger_error('Call to undefined method ' . __CLASS__ . '::' . $name . '()', E_USER_ERROR);
-		}
-		
-		return ( $metaData = $this->getMetadata()
-			and isset($metaData[fliPollData::getFromCamelCase(substr($name, 3))]) )
-			? $metaData[fliPollData::getFromCamelCase(substr($name, 3))]
-			: null;
-	}
+    public function __call($name, $arguments) {
+        if (strpos($name, 'get') !== 0) {
+            trigger_error('Call to undefined method ' . __CLASS__ . '::' . $name . '()', E_USER_ERROR);
+        }
+        
+        return ( $metaData = $this->getMetadata()
+            and isset($metaData[fliPollData::getFromCamelCase(substr($name, 3))]) )
+            ? $metaData[fliPollData::getFromCamelCase(substr($name, 3))]
+            : null;
+    }
 }
 ?>
