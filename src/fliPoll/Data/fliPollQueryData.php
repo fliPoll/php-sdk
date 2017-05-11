@@ -27,11 +27,11 @@
 namespace fliPoll\Data;
 
 class fliPollQueryData extends fliPollData {
-	/**
+    /**
      * Instantiates a new fliPollQueryData class object.
      */
-	function __construct() {
-		$this->source = &$_GET;
-	}
+    function __construct() {
+        $this->source = &$_GET;
+    }
 }
 ?>
