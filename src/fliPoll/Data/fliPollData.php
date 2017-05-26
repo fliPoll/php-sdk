@@ -86,7 +86,13 @@ class fliPollData {
      * @return string
      */
     public static function getFromCamelCase($input, $separator = '_') {
-        return strtolower(preg_replace('/(?<!^)[A-Z]/', $separator.'$0', $input));
+        return strtolower(
+            preg_replace(
+                '/(?<!^)[A-Z]/', 
+                ( $separator . '$0' ), 
+                $input
+            )
+        );
     }
 }
 ?>

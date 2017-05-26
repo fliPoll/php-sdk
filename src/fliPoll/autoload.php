@@ -36,7 +36,7 @@ if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 require_once __DIR__ . '/polyfills.php';
 
 /**
- * Registers the autoloader for the Test classes.
+ * Registers the autoloader for the fliPoll classes.
  *
  * @param string $className The class name.
  *

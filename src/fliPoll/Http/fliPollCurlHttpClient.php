@@ -88,21 +88,6 @@ class fliPollCurlHttpClient {
      * Opens a new cURL connection.
      */
     public function _openConnection() {
-        /*  
-        $options = [
-            CURLOPT_CUSTOMREQUEST => $this->_request->getMethod(),
-            CURLOPT_HTTPHEADER => $this->_compileRequestHeaders($this->_request->getHeaders()),
-            CURLOPT_URL => $this->_request->getUrl(),
-            CURLOPT_CONNECTTIMEOUT => 10,
-            CURLOPT_TIMEOUT => 60,
-            CURLOPT_RETURNTRANSFER => true, // Follow 301 redirects
-            CURLOPT_HEADER => true, // Enable header processing
-            CURLOPT_SSL_VERIFYHOST => 2,
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_CAINFO => __DIR__ . '/certs/DigiCertHighAssuranceEVRootCA.pem', // @TODO: Update cert
-        ];
-        */
-        
         $options = array(
             CURLOPT_CUSTOMREQUEST => $this->_request->getMethod(),
             CURLOPT_HTTPHEADER => $this->_compileRequestHeaders($this->_request->getHeaders()),
