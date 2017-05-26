@@ -89,7 +89,7 @@ class fliPollData {
         return strtolower(
             preg_replace(
                 '/(?<!^)[A-Z]/', 
-                $separator . '$0', 
+                ( $separator . '$0' ), 
                 $input
             )
         );
