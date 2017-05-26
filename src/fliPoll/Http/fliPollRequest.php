@@ -83,7 +83,6 @@ class fliPollRequest {
      * @param string $endPoint
      * @param array $params
      * @param string $accessToken
-     * @param string $apiVersion
      *
      * @throws \fliPoll\Exceptions\fliPollSDKException
      */
@@ -156,7 +155,7 @@ class fliPollRequest {
      * @return string
      */
     public function getUrl() {
-        $url = self::REST_API_URL . '/' . $this->_fliPoll->getApiVersion().$this->_endPoint;
+        $url = self::REST_API_URL . '/' . $this->_fliPoll->getApiVersion() . $this->_endPoint;
         
         if ( $this->_method === 'GET'
             and $params = $this->getParams() ) {
