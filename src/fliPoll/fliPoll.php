@@ -192,7 +192,7 @@ class fliPoll {
     }
     
     /**
-     * Assigns the access token value either from a passed value or OAuth2 request to the server.
+     * Associates a new access token with the fliPoll base class.
      *
      * @param string|null $accessToken
      */
