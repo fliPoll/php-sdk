@@ -83,7 +83,6 @@ class fliPollResponse {
     /**
      * Instantiates a new fliPollResponse class object.
      *
-     * @param \fliPoll\Http\fliPollRequest $request
      * @param array|string $headers
      * @param string $body
      * @param int|null $httpStatusCode
@@ -93,7 +92,7 @@ class fliPollResponse {
     function __construct($headers, $body, $httpStatusCode = null) {
         // Set this before parsing the raw headers to avoid overwriting raw http status codes
         if (is_numeric($httpStatusCode)) {
-            $this->_httpStatusCode = (int)$httpStatusCode;
+            $this->_httpStatusCode = (int) $httpStatusCode;
         }
         
         if (is_array($headers)) {
@@ -176,6 +175,8 @@ class fliPollResponse {
     
     /**
      * Store the headers from the raw API response HTTP headers.
+     *
+     * @param string $headers
      */
     private function _setHeadersFromString($headers) {
         // Normalize line breaks
@@ -201,11 +202,13 @@ class fliPollResponse {
     
     /**
      * Store the HTTP status code from the raw API response HTTP headers.
+     *
+     * @param string $rawResponseHeader
      */
     private function _setHttpStatusCodeFromHeader($rawResponseHeader) {
         if (preg_match('|HTTP/\d\.\d\s+(\d+)\s+.*|', $rawResponseHeader, $httpStatusCodeMatch)) {
             if (!$this->_httpStatusCode) {
-                $this->_httpStatusCode = (int)$match[1];
+                $this->_httpStatusCode = (int) $httpStatusCodeMatch[1];
             }
             
             if (preg_match('/{(.*?)}/', $rawResponseHeader, $oauthErrorMatch)) {
